@@ -1,0 +1,152 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #004169;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+    width: 100%;
+    background-color: #E6E6E6;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    padding: 40px;
+    min-width: 320px; 
+    overflow: hidden;
+}
+
+#labesc {
+    position: absolute;
+    top: 10px;
+    left: 7px;
+    width: clamp(100px, 15vw, 150px); 
+    height: auto;
+}
+
+#logounirio {
+    position: absolute;
+    top: 5px;
+
+    right: 7px; 
+    width: clamp(60px, 10vw, 100px); 
+    height: auto;
+}
+
+h1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    text-align: center;
+
+    font-size: clamp(2rem, 2.9vw, 2.2rem); 
+    white-space: nowrap; 
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); 
+}
+
+nav {
+    background-color: #B5B5B5;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px; 
+    padding: 10px;
+}
+
+nav .separator {
+    color: black;
+    font-weight: lighter;
+    font-size: 1.2em;
+}
+
+nav a, nav button {
+    margin: 0;
+    padding: 0;
+    font-weight: lighter;
+    background: none;
+    border: none;
+    font-size: 1em;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+
+div > button {
+    cursor: pointer;
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    height: 40px; 
+}
+
+.transparente {
+    background: transparent;
+    border: none;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.central-container {
+    height: calc(100vh - 200px); 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; 
+    min-width: 320px; 
+}
+
+#start-process {
+    padding: 12px 28px; 
+    font-size: 1.2em;    
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    background-color: #40ae40;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); 
+}
+
+#start-process:hover {
+    background-color: #318b31; 
+    transform: scale(1.05);    
+}
+
+#about-process {
+    padding: 8px 20px; 
+    font-size: 1em; 
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    background-color: #ffffff;
+    color: #004169;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); 
+}
+
+#about-process:hover {
+
+    background-color: #cfcfcf;
+    transform: scale(1.03); 
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.2rem; 
+    }
+
+    #start-process, #about-process {
+        width: 90%; 
+    }
+}
