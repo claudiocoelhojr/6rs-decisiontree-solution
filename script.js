@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function formatNodeId(nodeId) {
     if (nodeId.startsWith('DC')) {
       const number = nodeId.substring(2);
-      return `Decision Criteria n° 0${number}`;
+      return `Decision Criteria n° ${number}`;
     }
     return nodeId;
   }
@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!nextNode) {
         const title = document.createElement('h2');
-        title.textContent = 'Suggested Strategy:';
+        title.textContent = 'Recommended Strategy:';
         title.style.color = 'white';
         title.style.textAlign = 'center';
         title.style.marginBottom = '10px'; 
