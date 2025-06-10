@@ -110,7 +110,7 @@ div > button {
     font-weight: bold;
     border-radius: 8px;
     border: none;
-    background-color: #40ae40;
+    background-color: #24aa24;
     color: #ffffff;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -185,4 +185,56 @@ button.no-button:hover {
     background-color: #a30000;
     transform: scale(1.1);
     transition: all 0.3s ease-in-out;
+}
+
+/* ... seu CSS anterior permanece ... */
+
+.central-container {
+    height: calc(100vh - 200px); 
+    display: flex;
+    flex-direction: row; /* Alterado de column para row */
+    justify-content: center;
+    align-items: center;
+    gap: 20px; 
+    min-width: 320px; 
+    padding: 20px;
+}
+
+
+/* Novo: Estiliza a descrição à esquerda */
+.intro-text {
+    flex: 1;
+    color: white;
+    padding: 20px;
+    font-size: 1.4em;
+    line-height: 1.6;
+    max-width: 1000px;
+    text-align: justify;
+}
+
+.intro-text > h2 {
+    font-size: 1.6em;
+    text-align: center;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.575);
+}
+
+/* Novo: Coluna com os botões à direita */
+.button-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+}
+
+
+@media (max-width: 768px) {
+    .central-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .intro-text {
+        text-align: center;
+    }
 }
