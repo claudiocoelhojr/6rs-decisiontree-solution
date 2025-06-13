@@ -1,3 +1,4 @@
+/* --- Estilos Existentes (manter) --- */
 * {
     margin: 0;
     padding: 0;
@@ -17,7 +18,7 @@ header {
     align-items: flex-start;
     position: relative;
     padding: 40px;
-    min-width: 320px; 
+    min-width: 320px;
     overflow: hidden;
 }
 
@@ -25,16 +26,15 @@ header {
     position: absolute;
     top: 10px;
     left: 7px;
-    width: clamp(120px, 18vw, 180px); 
+    width: clamp(120px, 18vw, 180px);
     height: auto;
 }
 
 #logounirio {
     position: absolute;
     top: 5px;
-
-    right: 7px; 
-    width: clamp(60px, 10vw, 100px); 
+    right: 7px;
+    width: clamp(60px, 10vw, 100px);
     height: auto;
 }
 
@@ -45,10 +45,9 @@ h1 {
     transform: translate(-50%, -50%);
     margin: 0;
     text-align: center;
-
-    font-size: clamp(2rem, 2.9vw, 2.2rem); 
-    white-space: nowrap; 
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); 
+    font-size: clamp(2rem, 2.9vw, 2.2rem);
+    white-space: nowrap;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 nav {
@@ -57,7 +56,7 @@ nav {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 10px; 
+    gap: 10px;
     padding: 10px;
 }
 
@@ -82,9 +81,9 @@ nav a, nav button {
 div > button {
     cursor: pointer;
     display: flex;
-    justify-content: center; 
+    justify-content: center;
     align-items: center;
-    height: 40px; 
+    height: 40px;
 }
 
 .transparente {
@@ -95,18 +94,19 @@ div > button {
 }
 
 .central-container {
-    height: calc(100vh - 200px); 
+    height: calc(100vh - 200px);
     display: flex;
-    flex-direction: column;
+    flex-direction: row; /* Alterado de column para row */
     justify-content: center;
-    align-items: center;
-    gap: 20px; 
-    min-width: 320px; 
+    align-items: center; /* Centralizado verticalmente */
+    gap: 20px;
+    min-width: 320px;
+    padding: 20px;
 }
 
 #start-process {
-    padding: 12px 28px; 
-    font-size: 1.2em;    
+    padding: 29px 35px;
+    font-size: 1.6em;
     font-weight: bold;
     border-radius: 8px;
     border: none;
@@ -114,17 +114,17 @@ div > button {
     color: #ffffff;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); 
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 #start-process:hover {
-    background-color: #318b31; 
-    transform: scale(1.05);    
+    background-color: #318b31;
+    transform: scale(1.05);
 }
 
 #more-info {
-    padding: 8px 20px; 
-    font-size: 1em; 
+    padding: 10px 24px;
+    font-size: 1.4em;
     font-weight: bold;
     border-radius: 8px;
     border: none;
@@ -132,22 +132,21 @@ div > button {
     color: #004169;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); 
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 #more-info:hover {
-
     background-color: #cfcfcf;
-    transform: scale(1.03); 
+    transform: scale(1.03);
 }
 
 @media (max-width: 480px) {
     h1 {
-        font-size: 1.2rem; 
+        font-size: 1.2rem;
     }
 
     #start-process, #more-info {
-        width: 90%; 
+        width: 90%;
     }
 }
 
@@ -159,20 +158,52 @@ div > button {
 
 #restart-button:hover {
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-    transform: scale(1.05); 
+    transform: scale(1.05);
     transition: transform 0.2s ease, text-shadow 0.2s ease;
 }
 
 #about-nav:hover {
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-    transform: scale(1.05); 
+    transform: scale(1.05);
     transition: transform 0.2s ease, text-shadow 0.2s ease;
 }
 
 #contact-us:hover {
     text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-    transform: scale(1.05); 
+    transform: scale(1.05);
     transition: transform 0.2s ease, text-shadow 0.2s ease;
+}
+
+#home-nav:hover {
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+    transition: transform 0.2s ease, text-shadow 0.2s ease;
+}
+
+button.yes-button {
+    background-color: #40ae40;
+    color: #fff;
+    font-size: 2em;
+    font-weight: bold;
+    padding: 30px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+button.no-button {
+    background-color: #d33;
+    color: #fff;
+    font-size: 2em;
+    font-weight: bold;
+    padding: 30px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 
 button.yes-button:hover {
@@ -187,29 +218,17 @@ button.no-button:hover {
     transition: all 0.3s ease-in-out;
 }
 
-/* ... seu CSS anterior permanece ... */
-
-.central-container {
-    height: calc(100vh - 200px); 
-    display: flex;
-    flex-direction: row; /* Alterado de column para row */
-    justify-content: center;
-    align-items: center;
-    gap: 20px; 
-    min-width: 320px; 
-    padding: 20px;
-}
-
-
-/* Novo: Estiliza a descrição à esquerda */
 .intro-text {
     flex: 1;
     color: white;
-    padding: 20px;
+    padding: 40px;
     font-size: 1.4em;
     line-height: 1.6;
     max-width: 1000px;
     text-align: justify;
+    box-shadow:
+        2px 0 0 -1px rgba(255, 255, 255, 0.2),
+        inset -10px 0 8px -5px rgba(0, 0, 0, 0.1);
 }
 
 .intro-text > h2 {
@@ -227,14 +246,104 @@ button.no-button:hover {
     justify-content: center;
 }
 
+/* --- Novos Estilos para o Resultado --- */
+.results-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center; /* Centralizado verticalmente */
+    gap: 30px;
+    width: 100%;
+    flex-wrap: wrap;
+}
+
+/* Ordem das caixas (usando order para inverter no flexbox) */
+.strategy-output-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza o título e a caixa em relação ao wrapper */
+    min-width: 250px;
+    order: 1;
+}
+
+.strategy-title {
+    color: white;
+    font-size: 1.5em; /* Matches "Description" font size */
+    margin-bottom: 10px;
+    text-align: center; /* Alinha o texto do título ao centro */
+    text-shadow: 10px 4px 8px rgba(0, 0, 0, 0.555);
+}
+
+.strategy-box {
+    background-color: white;
+    padding: 35px;
+    margin: 10px;
+    border-radius: 10px;
+    text-align: center; /* O texto DENTRO da caixa continua centralizado */
+    font-weight: bold;
+    font-size: 1.8em;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    min-width: 200px;
+}
+
+.strategy-description-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centraliza o conteúdo verticalmente dentro do wrapper */
+    align-items: center; /* Centraliza o título "Description" horizontalmente */
+    min-width: 300px;
+    max-width: 60%;
+    order: 2;
+}
+
+.description-title { 
+    color: white;
+    font-size: 2em;
+    margin-bottom: 10px;
+    text-align: center; 
+    text-shadow: 10px 4px 8px rgba(0, 0, 0, 0.555);
+}
+
+.strategy-description {
+    color: white;
+    padding: 20px 0;
+    text-align: justify;
+    font-size: 1.4em;
+    font-weight: bold;
+    line-height: 1.6;
+}
 
 @media (max-width: 768px) {
     .central-container {
         flex-direction: column;
         align-items: center;
+        gap: 20px;
     }
 
     .intro-text {
         text-align: center;
+    }
+
+    .results-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .strategy-description-wrapper,
+    .strategy-output-wrapper {
+        width: 100%;
+        max-width: 90%;
+        align-items: center;
+    }
+
+    .strategy-title,
+    .description-title { 
+        text-align: center;
+    }
+
+    .strategy-output-wrapper,
+    .strategy-description-wrapper {
+        order: unset;
     }
 }
