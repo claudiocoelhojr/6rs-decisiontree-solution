@@ -1,0 +1,274 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #004169;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+header {
+    width: 100%;
+    background-color: #E6E6E6;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    padding: 40px;
+    min-width: 320px;
+    overflow: hidden;
+}
+
+#labesc {
+    position: absolute;
+    top: 10px;
+    left: 7px;
+    width: clamp(120px, 18vw, 180px);
+    height: auto;
+}
+
+#logounirio {
+    position: absolute;
+    top: 5px;
+    right: 7px;
+    width: clamp(60px, 10vw, 100px);
+    height: auto;
+}
+
+h1 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    text-align: center;
+    font-size: clamp(2rem, 2.9vw, 2.2rem);
+    white-space: nowrap;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+nav {
+    background-color: #B5B5B5;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+}
+
+nav .separator {
+    color: black;
+    font-weight: lighter;
+    font-size: 1.2em;
+}
+
+nav a, nav button {
+    margin: 0;
+    padding: 0;
+    font-weight: lighter;
+    background: none;
+    border: none;
+    font-size: 1em;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+}
+
+div > button {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+}
+
+.transparente {
+    background: transparent;
+    border: none;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.central-container {
+    height: calc(100vh - 200px);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    min-width: 320px;
+    padding: 20px;
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.2rem;
+    }
+}
+
+#restart-button:disabled {
+    color: #888888;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+#restart-button:hover, #about-nav:hover, #contact-us:hover, #home-nav:hover {
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+    transition: transform 0.2s ease, text-shadow 0.2s ease;
+}
+
+button.yes-button {
+    background-color: #40ae40;
+    color: #fff;
+    font-size: 2em;
+    font-weight: bold;
+    padding: 30px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+button.no-button {
+    background-color: #d33;
+    color: #fff;
+    font-size: 2em;
+    font-weight: bold;
+    padding: 30px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+button.yes-button:hover {
+    background-color: #318b31;
+    transform: scale(1.1);
+    transition: all 0.3s ease-in-out;
+}
+
+button.no-button:hover {
+    background-color: #a30000;
+    transform: scale(1.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.intro-text {
+    flex: 1;
+    color: white;
+    padding: 40px;
+    font-size: 1.4em;
+    line-height: 1.6;
+    max-width: 1000px;
+    text-align: justify;
+    box-shadow:
+        2px 0 0 -1px rgba(255, 255, 255, 0.2),
+        inset -10px 0 8px -5px rgba(0, 0, 0, 0.1);
+}
+
+.intro-text > h2 {
+    font-size: 1.6em;
+    text-align: center;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.575);
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; 
+    align-items: center;
+    justify-content: center;
+    background-color: #E6E6E6;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.login-container h2 {
+    color: #004169;
+    margin-bottom: 10px; 
+    font-size: 2em;
+    text-align: center;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    width: 100%;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    font-weight: bold;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #B5B5B5;
+    font-size: 1em;
+}
+
+.form-button {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.4em;
+    font-weight: bold;
+    border-radius: 8px;
+    border: none;
+    background-color: #24aa24;
+    color: #ffffff;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    height: auto;
+    margin-top: 10px;
+}
+
+.form-button:hover {
+    background-color: #318b31;
+    transform: scale(1.02);
+}
+
+.toggle-link {
+    font-size: 0.9em;
+    text-align: center;
+    color: #555;
+}
+
+.toggle-link a {
+    color: #004169;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.toggle-link a:hover {
+    text-decoration: underline;
+}
+
+.hidden {
+    display: none;
+}
+
+.results-container { display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 30px; width: 100%; flex-wrap: wrap; }
+.strategy-output-wrapper { display: flex; flex-direction: column; align-items: center; min-width: 250px; order: 1; }
+.strategy-title { color: white; font-size: 1.5em; margin-bottom: 10px; text-align: center; text-shadow: 10px 4px 8px rgba(0, 0, 0, 0.555); }
+.strategy-box { background-color: white; padding: 35px; margin: 10px; border-radius: 10px; text-align: center; font-weight: bold; font-size: 1.8em; box-shadow: 0 4px 8px rgba(0,0,0,0.2); min-width: 200px; }
+.strategy-description-wrapper { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 300px; max-width: 60%; order: 2; }
+.description-title { color: white; font-size: 2em; margin-bottom: 10px; text-align: center; text-shadow: 10px 4px 8px rgba(0, 0, 0, 0.555); }
+.strategy-description { color: white; padding: 20px 0; text-align: justify; font-size: 1.4em; font-weight: bold; line-height: 1.6; }
+
+@media (max-width: 768px) {
+    .central-container, .results-container { flex-direction: column; align-items: center; gap: 20px; }
+    .intro-text, .strategy-title, .description-title { text-align: center; }
+    .strategy-description-wrapper, .strategy-output-wrapper { width: 100%; max-width: 90%; align-items: center; order: unset; }
+}
