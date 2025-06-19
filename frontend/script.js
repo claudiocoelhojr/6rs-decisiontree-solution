@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
             localStorage.setItem('authToken', data.token);
             showMainAppView();
         } catch (error) {
-            // O erro já é mostrado pelo alert() dentro de apiCall.
+            
         } finally {
             submitButton.textContent = 'START THE PROCESS';
             submitButton.disabled = false;
