@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } catch (error) {
             
         } finally {
-            submitButton.textContent = 'START THE PROCESS';
+            submitButton.textContent = 'LOGIN';
             submitButton.disabled = false;
         }
     });
@@ -94,10 +94,11 @@ document.addEventListener('DOMContentLoaded', function () {
         centralContainer.style.alignItems = 'center';
 
         const welcomeTitle = document.createElement('h2');
-        welcomeTitle.textContent = 'Start a new process or view your history';
+        welcomeTitle.textContent = 'CHOOSE AN OPTION:';
         welcomeTitle.style.color = 'white';
         welcomeTitle.style.fontSize = '2em';
         welcomeTitle.style.marginBottom = '30px';
+        welcomeTitle.style.textShadow = '0px 8px 16px rgba(0, 0, 0, 0.3);'
 
         const buttonContainer = document.createElement('div');
         buttonContainer.style.display = 'flex';
@@ -136,7 +137,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const data = await apiCall('/processes', 'GET');
             centralContainer.innerHTML = '';
             const title = document.createElement('h2');
-            title.textContent = "Your Past Processes";
+            title.textContent = "PREVIOUS RESULTS";
+            title.style.fontSize = '2.5em';
             title.style.color = 'white';
             title.style.marginBottom = '20px';
             centralContainer.appendChild(title);
@@ -230,53 +232,64 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!nextNode) {
             const finalStrategy = { type: 'strategy', id: nodeId, text: strategyDescriptions[nodeId] || 'No description available.', name: nodeId };
             processHistory.push(finalStrategy);
-            centralContainer.style.flexDirection = 'row';
             
+            centralContainer.style.flexDirection = 'row';
+            // === ALTERAÇÃO AQUI ===
+            // Altera o alinhamento de 'flex-start' (topo) para 'center' (centro vertical)
+            centralContainer.style.alignItems = 'center'; 
+            centralContainer.style.gap = '30px'; 
+        
+            const contentColumn = document.createElement('div');
+            contentColumn.classList.add('results-content-column');
+        
             const resultsContainer = document.createElement('div');
             resultsContainer.classList.add('results-container');
             resultsContainer.id = 'results-section-for-pdf';
-
+            resultsContainer.style.flexDirection = 'column';
+        
             const strategyOutputWrapper = document.createElement('div');
             strategyOutputWrapper.classList.add('strategy-output-wrapper');
-
+        
             const strategyTitle = document.createElement('h3');
             strategyTitle.classList.add('strategy-title');
             strategyTitle.textContent = 'STRATEGY SUGGESTED';
-
+        
             const strategyBox = document.createElement('div');
             strategyBox.classList.add('strategy-box');
             strategyBox.textContent = nodeId;
-
+        
             strategyOutputWrapper.appendChild(strategyTitle);
             strategyOutputWrapper.appendChild(strategyBox);
-
+        
             const descriptionWrapper = document.createElement('div');
             descriptionWrapper.classList.add('strategy-description-wrapper');
-
+        
             const descriptionTitle = document.createElement('h3');
             descriptionTitle.classList.add('description-title');
             descriptionTitle.textContent = 'DESCRIPTION';
-            descriptionWrapper.appendChild(descriptionTitle);
-
+            
             const descriptionBox = document.createElement('p');
             descriptionBox.classList.add('strategy-description');
             descriptionBox.textContent = strategyDescriptions[nodeId] || 'No description available.';
+        
+            descriptionWrapper.appendChild(descriptionTitle);
             descriptionWrapper.appendChild(descriptionBox);
-
+        
             resultsContainer.appendChild(strategyOutputWrapper);
             resultsContainer.appendChild(descriptionWrapper);
-            centralContainer.appendChild(resultsContainer);
-
+            contentColumn.appendChild(resultsContainer);
+        
+            const buttonColumn = document.createElement('div');
+            buttonColumn.classList.add('results-button-column');
+        
             const buttonContainer = document.createElement('div');
             buttonContainer.style.display = 'flex';
-            buttonContainer.style.flexWrap = 'wrap';
-            buttonContainer.style.justifyContent = 'center';
+            buttonContainer.style.flexDirection = 'column'; 
             buttonContainer.style.gap = '20px';
-            buttonContainer.style.marginTop = '20px';
             buttonContainer.style.width = '100%';
-
+        
             const saveButton = document.createElement('button');
-            saveButton.textContent = 'Save Process to History';
+            saveButton.textContent = 'Save Process';
             saveButton.className = 'form-button';
             saveButton.onclick = async () => {
                 try {
@@ -284,26 +297,30 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert('Process saved successfully!');
                     showMainAppView();
                 } catch (error) {
+                    // ...
                 }
             };
-
+        
             const generatePdfButton = document.createElement('button');
-            generatePdfButton.textContent = 'Generate PDF Report';
+            generatePdfButton.textContent = 'Generate .PDF Report';
             generatePdfButton.className = 'form-button';
             generatePdfButton.style.backgroundColor = '#007BFF';
             generatePdfButton.onclick = generatePdfReport;
-
+        
             const backButton = document.createElement('button');
             backButton.textContent = 'Menu (Don\'t Save)';
             backButton.className = 'form-button';
             backButton.style.backgroundColor = '#6c757d';
             backButton.onclick = showMainAppView;
-
+        
             buttonContainer.appendChild(saveButton);
             buttonContainer.appendChild(generatePdfButton);
             buttonContainer.appendChild(backButton);
-            centralContainer.appendChild(buttonContainer);
-
+            buttonColumn.appendChild(buttonContainer);
+        
+            centralContainer.appendChild(contentColumn);
+            centralContainer.appendChild(buttonColumn);
+        
             return;
         }
 

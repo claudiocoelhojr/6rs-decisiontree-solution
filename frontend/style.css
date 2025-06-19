@@ -7,6 +7,7 @@
 body {
     background-color: #004169;
     font-family: Arial, Helvetica, sans-serif;
+    -webkit-text-size-adjust: 100%; /* Previne o zoom automático de fontes no iOS */
 }
 
 header {
@@ -57,6 +58,7 @@ nav {
     align-items: center;
     gap: 10px;
     padding: 10px;
+    flex-wrap: wrap; /* Permite que os links da NAV quebrem a linha */
 }
 
 nav .separator {
@@ -93,20 +95,15 @@ div > button {
 }
 
 .central-container {
-    height: calc(100vh - 200px);
+    height: auto; /* Mudar para auto para permitir conteúdo maior que a tela */
+    min-height: calc(100vh - 200px); /* Garante que ocupe a tela na maioria dos casos */
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 20px;
     min-width: 320px;
-    padding: 20px;
-}
-
-@media (max-width: 480px) {
-    h1 {
-        font-size: 1.2rem;
-    }
+    padding: 20px 50px;
 }
 
 #restart-button:disabled {
@@ -188,6 +185,8 @@ button.no-button:hover {
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 450px; /* Define uma largura máxima */
 }
 
 .login-container h2 {
@@ -239,6 +238,7 @@ button.no-button:hover {
 }
 
 .toggle-link {
+    padding-top: 10px;
     font-size: 0.9em;
     text-align: center;
     color: #555;
@@ -259,16 +259,167 @@ button.no-button:hover {
     display: none;
 }
 
-.results-container { display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 30px; width: 100%; flex-wrap: wrap; }
-.strategy-output-wrapper { display: flex; flex-direction: column; align-items: center; min-width: 250px; order: 1; }
-.strategy-title { color: white; font-size: 1.5em; margin-bottom: 10px; text-align: center; text-shadow: 10px 4px 8px rgba(0, 0, 0, 0.555); }
-.strategy-box { background-color: white; padding: 35px; margin: 10px; border-radius: 10px; text-align: center; font-weight: bold; font-size: 1.8em; box-shadow: 0 4px 8px rgba(0,0,0,0.2); min-width: 200px; }
-.strategy-description-wrapper { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-width: 300px; max-width: 60%; order: 2; }
-.description-title { color: white; font-size: 2em; margin-bottom: 10px; text-align: center; text-shadow: 10px 4px 8px rgba(0, 0, 0, 0.555); }
-.strategy-description { color: white; padding: 20px 0; text-align: justify; font-size: 1.4em; font-weight: bold; line-height: 1.6; }
+.results-container { 
+    display: flex; 
+    flex-direction: column; /* Mudar para column por padrão para facilitar a responsividade */
+    justify-content: center; 
+    align-items: center; 
+    gap: 30px; 
+    width: 100%; 
+    flex-wrap: wrap; 
+}
 
+.strategy-output-wrapper { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    min-width: 250px; 
+    width: 100%; /* Ocupa a largura da coluna */
+}
+
+.strategy-title { 
+    color: white; 
+    font-size: 1.5em; 
+    margin-bottom: 10px; 
+    text-align: center; 
+    text-shadow: 10px 4px 8px rgba(0, 0, 0, 0.555); 
+}
+
+.strategy-box { 
+    background-color: white; 
+    padding: 35px; 
+    margin: 10px; 
+    border-radius: 10px; 
+    text-align: center; 
+    font-weight: bold; 
+    font-size: 1.8em; 
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); 
+    min-width: 200px; 
+}
+
+.strategy-description-wrapper { 
+    flex: 1; 
+    display: flex; 
+    flex-direction: column; 
+    justify-content: center; 
+    align-items: center; 
+    min-width: 300px; 
+    max-width: 100%; /* Ajustado para 100% */
+}
+
+.description-title { 
+    color: white; 
+    font-size: 2em; 
+    margin-bottom: 10px; 
+    text-align: center; 
+    text-shadow: 10px 4px 8px rgba(0, 0, 0, 0.555); 
+}
+
+.strategy-description { 
+    width: 100%; /* Ajustado para 100% */
+    color: white; 
+    padding: 20px 0; 
+    text-align: justify; 
+    font-size: 1.4em; 
+    font-weight: bold; 
+    line-height: 1.6; 
+}
+
+.results-content-column {
+    flex: 2; 
+    display: flex;
+    flex-direction: column;
+}
+
+.results-button-column {
+    flex: 1; 
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 400px; /* Define uma largura máxima para a coluna de botões */
+}
+
+/* === SEÇÃO DE RESPONSIVIDADE === */
+
+/* Para tablets e celulares em modo paisagem */
+@media (max-width: 992px) {
+    .central-container {
+        padding: 20px 30px; /* Diminui o padding lateral */
+    }
+    .results-content-column {
+        flex: 1.5;
+    }
+}
+
+/* Para celulares em modo retrato e tablets menores */
 @media (max-width: 768px) {
-    .central-container, .results-container { flex-direction: column; align-items: center; gap: 20px; }
-    .intro-text, .strategy-title, .description-title { text-align: center; }
-    .strategy-description-wrapper, .strategy-output-wrapper { width: 100%; max-width: 90%; align-items: center; order: unset; }
+    .central-container {
+        flex-direction: column !important; /* Força empilhamento em todas as seções */
+        padding: 20px;
+    }
+
+    .intro-text {
+        padding: 20px;
+        font-size: 1.1em;
+        box-shadow: none; /* Remove a sombra lateral que não faz sentido no mobile */
+        border-right: none;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+        white-space: normal; /* Permite que o título quebre a linha */
+        position: relative; /* Remove o posicionamento absoluto */
+        transform: none;
+        left: auto;
+        top: auto;
+        padding-top: 10px; /* Adiciona espaço para não colar nas logos */
+    }
+
+    .login-container {
+        max-width: 100%;
+        padding: 20px;
+    }
+
+    .results-content-column, .results-button-column {
+        flex: none; 
+        width: 100%; 
+        max-width: 100%;
+    }
+
+    .description-title {
+        font-size: 1.5em;
+    }
+
+    .strategy-description {
+        font-size: 1.1em;
+    }
+    
+    button.yes-button, button.no-button {
+        font-size: 1.5em;
+        padding: 20px 15px;
+    }
+}
+
+/* Para celulares menores */
+@media (max-width: 480px) {
+    header {
+        padding: 20px 10px 30px 10px; /* Reduz padding e aumenta o inferior para o título */
+        min-height: 120px; /* Garante espaço para o título quebrado */
+    }
+
+    h1 {
+        font-size: 1.3rem; /* Diminui ainda mais a fonte do título principal */
+    }
+    
+    .login-container h2 {
+        font-size: 1.5em;
+    }
+
+    .form-button {
+        font-size: 1.1em;
+    }
+
+    .intro-text h2 {
+        font-size: 1.4em;
+    }
 }
