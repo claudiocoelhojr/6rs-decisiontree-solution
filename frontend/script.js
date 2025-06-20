@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let processHistory = [];
     let currentNode = 'DC5';
-    const API_URL = 'http://127.0.0.1:5000';
+    const API_URL = 'https://sixrs-decisiontree-solution.onrender.com';
 
     const token = localStorage.getItem('authToken');
     if (token) {
