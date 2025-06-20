@@ -12,7 +12,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "https://6rs-decisiontree-solution.vercel.app/"}})
+
+# --- CORREÇÃO AQUI ---
+# Removida a barra '/' no final da URL para uma correspondência exata.
+CORS(app, resources={r"/*": {"origins": "https://6rs-decisiontree-solution.vercel.app"}})
 
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
@@ -110,7 +113,7 @@ def save_process(current_user):
     final_strategy = next((item for item in reversed(process_history) if item.get('type') == 'strategy'), None)
 
     if not final_strategy:
-         return jsonify({'message': 'Could not determine final strategy from history'}), 400
+        return jsonify({'message': 'Could not determine final strategy from history'}), 400
 
     new_process = Process(
         user_id=current_user.id,
