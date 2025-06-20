@@ -234,8 +234,6 @@ document.addEventListener('DOMContentLoaded', function () {
             processHistory.push(finalStrategy);
             
             centralContainer.style.flexDirection = 'row';
-            // === ALTERAÇÃO AQUI ===
-            // Altera o alinhamento de 'flex-start' (topo) para 'center' (centro vertical)
             centralContainer.style.alignItems = 'center'; 
             centralContainer.style.gap = '30px'; 
         
@@ -297,7 +295,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert('Process saved successfully!');
                     showMainAppView();
                 } catch (error) {
-                    // ...
                 }
             };
         
