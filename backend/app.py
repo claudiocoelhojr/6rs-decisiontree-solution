@@ -6,6 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
+from flask_mail import Mail, Message
 import jwt
 from dotenv import load_dotenv
 
@@ -13,17 +14,23 @@ load_dotenv()
 
 app = Flask(__name__)
 
-# --- CORREÇÃO AQUI ---
-# Removida a barra '/' no final da URL para uma correspondência exata.
-CORS(app, resources={r"/*": {"origins": "https://6rs-decisiontree-solution.vercel.app"}})
+CORS(app, resources={r"/*": {"origins": os.environ.get('FRONTEND_URL')}})
 
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+app.config['MAIL_SERVER'] = os.environ.get('MAIL_SERVER')
+app.config['MAIL_PORT'] = int(os.environ.get('MAIL_PORT'))
+app.config['MAIL_USE_TLS'] = os.environ.get('MAIL_USE_TLS').lower() in ['true', '1', 't']
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_USERNAME')
+
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 bcrypt = Bcrypt(app)
+mail = Mail(app)
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -64,7 +71,6 @@ def token_required(f):
         return f(current_user, *args, **kwargs)
     return decorated
 
-
 @app.route('/signup', methods=['POST'])
 def signup():
     data = request.get_json()
@@ -100,6 +106,69 @@ def login():
     }, app.config['SECRET_KEY'], algorithm="HS256")
 
     return jsonify({'token': token})
+
+@app.route('/forgot-password', methods=['POST'])
+def forgot_password():
+    data = request.get_json()
+    email = data.get('email')
+    user = User.query.filter_by(email=email).first()
+
+    if not user:
+        return jsonify({'message': 'If an account with that email exists, a reset link has been sent.'}), 200
+
+    try:
+        reset_token = jwt.encode({
+            'user_id': user.id,
+            'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15)
+        }, app.config['SECRET_KEY'], algorithm="HS256")
+
+        frontend_url = os.environ.get('FRONTEND_URL')
+        reset_url = f"{frontend_url}/reset_password.html?token={reset_token}"
+
+        msg = Message("Password Reset Request for 6R's Decision Tree",
+                      recipients=[user.email])
+        msg.html = f"""
+            <p>Hello,</p>
+            <p>You requested a password reset for your account on the 6R's Decision Tree Solution.</p>
+            <p>Please click the link below to set a new password. This link is valid for 15 minutes.</p>
+            <p><a href="{reset_url}" style="padding: 10px 15px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Reset Your Password</a></p>
+            <p>If you did not request a password reset, please ignore this email.</p>
+            <p>Thank you,<br>The 6R's Decision Tree Team</p>
+        """
+        mail.send(msg)
+
+        return jsonify({'message': 'If an account with that email exists, a reset link has been sent.'}), 200
+
+    except Exception as e:
+        return jsonify({'message': 'An error occurred while sending the email.', 'error': str(e)}), 500
+
+@app.route('/reset-password', methods=['POST'])
+def reset_password():
+    data = request.get_json()
+    token = data.get('token')
+    new_password = data.get('password')
+
+    if not token or not new_password:
+        return jsonify({'message': 'Token and new password are required.'}), 400
+
+    try:
+        token_data = jwt.decode(token, app.config['SECRET_KEY'], algorithms=["HS256"])
+        user = User.query.get(token_data['user_id'])
+        
+        if not user:
+             return jsonify({'message': 'User not found.'}), 404
+
+        user.password_hash = bcrypt.generate_password_hash(new_password).decode('utf-8')
+        db.session.commit()
+        
+        return jsonify({'message': 'Password has been updated successfully.'}), 200
+
+    except jwt.ExpiredSignatureError:
+        return jsonify({'message': 'Token has expired. Please request a new reset link.'}), 401
+    except jwt.InvalidTokenError:
+        return jsonify({'message': 'Token is invalid. Please request a new reset link.'}), 401
+    except Exception as e:
+        return jsonify({'message': 'An error occurred.', 'error': str(e)}), 500
 
 @app.route('/save_process', methods=['POST'])
 @token_required

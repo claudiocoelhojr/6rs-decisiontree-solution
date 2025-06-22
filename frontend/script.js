@@ -3,10 +3,17 @@ import { decisionTree } from './decisiontree.js';
 document.addEventListener('DOMContentLoaded', function () {
     const loginForm = document.getElementById('login-form');
     const signupForm = document.getElementById('signup-form');
+    const forgotPasswordForm = document.getElementById('forgot-password-form');
+
     const loginView = document.getElementById('login-view');
     const signupView = document.getElementById('signup-view');
+    const forgotPasswordView = document.getElementById('forgot-password-view');
+    
     const showSignupLink = document.getElementById('show-signup-link');
     const showLoginLink = document.getElementById('show-login-link');
+    const forgotPasswordLink = document.getElementById('forgot-password-link');
+    const backToLoginLink = document.getElementById('back-to-login-link');
+
     const centralContainer = document.querySelector('.central-container');
     const initialContainer = document.getElementById('initial-container');
     const restartButton = document.getElementById('restart-button');
@@ -43,8 +50,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    showSignupLink.addEventListener('click', (e) => { e.preventDefault(); loginView.classList.add('hidden'); signupView.classList.remove('hidden'); });
-    showLoginLink.addEventListener('click', (e) => { e.preventDefault(); signupView.classList.add('hidden'); loginView.classList.remove('hidden'); });
+    showSignupLink.addEventListener('click', (e) => { e.preventDefault(); loginView.classList.add('hidden'); forgotPasswordView.classList.add('hidden'); signupView.classList.remove('hidden'); });
+    showLoginLink.addEventListener('click', (e) => { e.preventDefault(); signupView.classList.add('hidden'); forgotPasswordView.classList.add('hidden'); loginView.classList.remove('hidden'); });
+    forgotPasswordLink.addEventListener('click', (e) => { e.preventDefault(); loginView.classList.add('hidden'); signupView.classList.add('hidden'); forgotPasswordView.classList.remove('hidden'); });
+    backToLoginLink.addEventListener('click', (e) => { e.preventDefault(); forgotPasswordView.classList.add('hidden'); signupView.classList.add('hidden'); loginView.classList.remove('hidden'); });
 
     loginForm.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -59,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
             localStorage.setItem('authToken', data.token);
             showMainAppView();
         } catch (error) {
-            
+            alert(error.message);
         } finally {
             submitButton.textContent = 'LOGIN';
             submitButton.disabled = false;
@@ -82,6 +91,27 @@ document.addEventListener('DOMContentLoaded', function () {
             signupView.classList.add('hidden');
             loginView.classList.remove('hidden');
         } catch (error) {
+            alert(error.message);
+        }
+    });
+
+    forgotPasswordForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const email = document.getElementById('forgot-email').value;
+        const submitButton = forgotPasswordForm.querySelector('button[type="submit"]');
+        submitButton.textContent = 'SENDING...';
+        submitButton.disabled = true;
+
+        try {
+            const data = await apiCall('/forgot-password', 'POST', { email });
+            alert(data.message);
+            forgotPasswordView.classList.add('hidden');
+            loginView.classList.remove('hidden');
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            submitButton.textContent = 'SEND RESET LINK';
+            submitButton.disabled = false;
         }
     });
 
@@ -179,6 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
             backButton.onclick = showMainAppView;
             centralContainer.appendChild(backButton);
         } catch (error) {
+            alert(error.message);
         }
     }
 
@@ -295,6 +326,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert('Process saved successfully!');
                     showMainAppView();
                 } catch (error) {
+                    alert(error.message);
                 }
             };
         

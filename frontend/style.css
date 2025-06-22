@@ -7,7 +7,7 @@
 body {
     background-color: #004169;
     font-family: Arial, Helvetica, sans-serif;
-    -webkit-text-size-adjust: 100%; /* Previne o zoom automático de fontes no iOS */
+    -webkit-text-size-adjust: 100%;
 }
 
 header {
@@ -58,7 +58,7 @@ nav {
     align-items: center;
     gap: 10px;
     padding: 10px;
-    flex-wrap: wrap; /* Permite que os links da NAV quebrem a linha */
+    flex-wrap: wrap;
 }
 
 nav .separator {
@@ -95,8 +95,8 @@ div > button {
 }
 
 .central-container {
-    height: auto; /* Mudar para auto para permitir conteúdo maior que a tela */
-    min-height: calc(100vh - 200px); /* Garante que ocupe a tela na maioria dos casos */
+    height: auto;
+    min-height: calc(100vh - 200px);
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -186,7 +186,7 @@ button.no-button:hover {
     border-radius: 10px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
     width: 100%;
-    max-width: 450px; /* Define uma largura máxima */
+    max-width: 450px;
 }
 
 .login-container h2 {
@@ -261,7 +261,7 @@ button.no-button:hover {
 
 .results-container { 
     display: flex; 
-    flex-direction: column; /* Mudar para column por padrão para facilitar a responsividade */
+    flex-direction: column;
     justify-content: center; 
     align-items: center; 
     gap: 30px; 
@@ -274,7 +274,7 @@ button.no-button:hover {
     flex-direction: column; 
     align-items: center; 
     min-width: 250px; 
-    width: 100%; /* Ocupa a largura da coluna */
+    width: 100%;
 }
 
 .strategy-title { 
@@ -304,7 +304,7 @@ button.no-button:hover {
     justify-content: center; 
     align-items: center; 
     min-width: 300px; 
-    max-width: 100%; /* Ajustado para 100% */
+    max-width: 100%;
 }
 
 .description-title { 
@@ -316,7 +316,7 @@ button.no-button:hover {
 }
 
 .strategy-description { 
-    width: 100%; /* Ajustado para 100% */
+    width: 100%;
     color: white; 
     padding: 20px 0; 
     text-align: justify; 
@@ -336,43 +336,39 @@ button.no-button:hover {
     display: flex;
     justify-content: flex-start;
     width: 100%;
-    max-width: 400px; /* Define uma largura máxima para a coluna de botões */
+    max-width: 400px;
 }
 
-/* === SEÇÃO DE RESPONSIVIDADE === */
-
-/* Para tablets e celulares em modo paisagem */
 @media (max-width: 992px) {
     .central-container {
-        padding: 20px 30px; /* Diminui o padding lateral */
+        padding: 20px 30px;
     }
     .results-content-column {
         flex: 1.5;
     }
 }
 
-/* Para celulares em modo retrato e tablets menores */
 @media (max-width: 768px) {
     .central-container {
-        flex-direction: column !important; /* Força empilhamento em todas as seções */
+        flex-direction: column !important;
         padding: 20px;
     }
 
     .intro-text {
         padding: 20px;
         font-size: 1.1em;
-        box-shadow: none; /* Remove a sombra lateral que não faz sentido no mobile */
+        box-shadow: none;
         border-right: none;
     }
     
     h1 {
         font-size: 1.8rem;
-        white-space: normal; /* Permite que o título quebre a linha */
-        position: relative; /* Remove o posicionamento absoluto */
+        white-space: normal;
+        position: relative;
         transform: none;
         left: auto;
         top: auto;
-        padding-top: 10px; /* Adiciona espaço para não colar nas logos */
+        padding-top: 10px;
     }
 
     .login-container {
@@ -400,15 +396,14 @@ button.no-button:hover {
     }
 }
 
-/* Para celulares menores */
 @media (max-width: 480px) {
     header {
-        padding: 20px 10px 30px 10px; /* Reduz padding e aumenta o inferior para o título */
-        min-height: 120px; /* Garante espaço para o título quebrado */
+        padding: 20px 10px 30px 10px;
+        min-height: 120px;
     }
 
     h1 {
-        font-size: 1.3rem; /* Diminui ainda mais a fonte do título principal */
+        font-size: 1.3rem;
     }
     
     .login-container h2 {
