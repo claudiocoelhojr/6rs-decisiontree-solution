@@ -1,4 +1,3 @@
-/* frontend/style.css */
 * {
     margin: 0;
     padding: 0;
@@ -267,7 +266,6 @@ button.no-button:hover {
     display: none;
 }
 
-/* NOVOS ESTILOS PARA O MENU PRINCIPAL */
 .main-menu-title {
     color: white;
     font-size: 2.5em;
@@ -311,7 +309,6 @@ button.no-button:hover {
     max-width: 500px;
 }
 
-/* NOVOS ESTILOS PARA A PÁGINA DE HISTÓRICO */
 .history-title {
     font-size: 2.5em;
     color: white;
@@ -361,15 +358,15 @@ button.no-button:hover {
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
-    list-style: none; /* Remove a seta padrão */
+    list-style: none; 
 }
 
 .history-item-summary::-webkit-details-marker {
-    display: none; /* Remove a seta no Chrome/Safari */
+    display: none; 
 }
 
 .history-item-summary::before {
-    content: '▶'; /* Seta personalizada */
+    content: '▶'; 
     margin-right: 10px;
     font-size: 0.8em;
     transition: transform 0.2s ease-in-out;
@@ -378,7 +375,6 @@ button.no-button:hover {
 details[open] > summary::before {
     transform: rotate(90deg);
 }
-
 
 .summary-info {
     display: flex;
@@ -424,8 +420,6 @@ details[open] > summary::before {
     margin-bottom: 5px;
 }
 
-
-/* ESTILOS DE RESULTADOS */
 .results-container { 
     display: flex; 
     flex-direction: column;

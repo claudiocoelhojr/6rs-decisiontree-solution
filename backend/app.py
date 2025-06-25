@@ -1,4 +1,3 @@
-# backend/app.py
 import os
 import datetime
 from functools import wraps
@@ -49,7 +48,7 @@ class User(db.Model):
 class Process(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    application_name = db.Column(db.String(100), nullable=True) # NOVA COLUNA
+    application_name = db.Column(db.String(100), nullable=True) 
     strategy_name = db.Column(db.String(50), nullable=False)
     history_json = db.Column(db.JSON, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
@@ -177,7 +176,7 @@ def reset_password():
 def save_process(current_user):
     data = request.get_json()
     process_history = data.get('processHistory')
-    application_name = data.get('applicationName') # NOVO CAMPO
+    application_name = data.get('applicationName')
 
     if not process_history or not application_name:
         return jsonify({'message': 'Process history and application name are required'}), 400
@@ -192,7 +191,7 @@ def save_process(current_user):
 
     new_process = Process(
         user_id=current_user.id,
-        application_name=application_name, # NOVO CAMPO
+        application_name=application_name, 
         strategy_name=final_strategy.get('name', 'UNKNOWN'),
         history_json=process_history
     )
@@ -210,7 +209,7 @@ def get_processes(current_user):
     for process in user_processes:
         process_data = {
             'id': process.id,
-            'application_name': process.application_name, # NOVO CAMPO
+            'application_name': process.application_name,
             'strategy_name': process.strategy_name,
             'created_at': process.created_at.isoformat(),
             'history': process.history_json

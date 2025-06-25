@@ -1,4 +1,3 @@
-// frontend/script.js
 import { decisionTree } from './decisiontree.js';
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -21,8 +20,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let processHistory = [];
     let currentNode = 'DC5';
-    let currentApplicationName = ''; // NOVA VARIÁVEL
-    let allProcesses = []; // Armazena todos os processos para filtragem no cliente
+    let currentApplicationName = ''; 
+    let allProcesses = []; 
     const API_URL = 'https://sixrs-decisiontree-solution.onrender.com';
 
     const token = localStorage.getItem('authToken');
@@ -71,7 +70,6 @@ document.addEventListener('DOMContentLoaded', function () {
             localStorage.setItem('authToken', data.token);
             showMainAppView();
         } catch (error) {
-            // A função apiCall já mostra o alerta
         } finally {
             submitButton.textContent = 'LOGIN';
             submitButton.disabled = false;
@@ -94,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function () {
             signupView.classList.add('hidden');
             loginView.classList.remove('hidden');
         } catch (error) {
-            // A função apiCall já mostra o alerta
         }
     });
 
@@ -111,7 +108,6 @@ document.addEventListener('DOMContentLoaded', function () {
             forgotPasswordView.classList.add('hidden');
             loginView.classList.remove('hidden');
         } catch (error) {
-            // A função apiCall já mostra o alerta
         } finally {
             submitButton.textContent = 'SEND RESET LINK';
             submitButton.disabled = false;
@@ -130,22 +126,21 @@ document.addEventListener('DOMContentLoaded', function () {
         welcomeTitle.textContent = 'WELCOME!';
         welcomeTitle.className = 'main-menu-title';
     
-        // NOVO: Campo de input para o nome da aplicação
         const appNameContainer = document.createElement('div');
         appNameContainer.className = 'input-group main-menu-input-group';
     
         const appNameLabel = document.createElement('label');
         appNameLabel.htmlFor = 'applicationName';
-        appNameLabel.textContent = 'First, what is the name of the application to be migrated?';
+        appNameLabel.textContent = 'Enter Application Name:';
     
         const appNameInput = document.createElement('input');
         appNameInput.type = 'text';
         appNameInput.id = 'applicationName';
-        appNameInput.placeholder = 'e.g., Legacy CRM System';
+        appNameInput.placeholder = 'e.g., Legacy System Name';
     
         const errorMsg = document.createElement('p');
         errorMsg.className = 'error-message';
-        errorMsg.style.display = 'none'; // Escondido por padrão
+        errorMsg.style.display = 'none'; 
     
         appNameContainer.appendChild(appNameLabel);
         appNameContainer.appendChild(appNameInput);
@@ -157,14 +152,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const startNewBtn = document.createElement('button');
         startNewBtn.textContent = 'Start New Process';
         startNewBtn.className = 'form-button';
-        startNewBtn.disabled = true; // Desabilitado por padrão
+        startNewBtn.disabled = true; 
     
         const viewHistoryBtn = document.createElement('button');
         viewHistoryBtn.textContent = 'View History';
         viewHistoryBtn.className = 'form-button';
-        viewHistoryBtn.style.backgroundColor = '#007BFF';
+        viewHistoryBtn.style.backgroundColor = '007BFF';
     
-        // NOVO: Lógica de validação
         appNameInput.addEventListener('input', () => {
             const appName = appNameInput.value.trim();
             if (appName.length >= 3) {
@@ -204,10 +198,9 @@ document.addEventListener('DOMContentLoaded', function () {
         };
     }
     
-    // NOVO: Função para renderizar a lista de histórico (para suportar filtragem)
     function renderHistoryList(processes) {
         const historyListContainer = document.getElementById('history-list-container');
-        historyListContainer.innerHTML = ''; // Limpa a lista antes de renderizar
+        historyListContainer.innerHTML = ''; 
 
         if (processes.length === 0) {
             const noResultsText = document.createElement('p');
@@ -221,7 +214,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 const procItem = document.createElement('div');
                 procItem.className = 'history-item';
 
-                // Usando <details> e <summary> para a cascata
                 const details = document.createElement('details');
                 const summary = document.createElement('summary');
                 summary.className = 'history-item-summary';
@@ -239,10 +231,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 detailsContent.className = 'history-item-details';
 
                 const questionsTitle = document.createElement('h4');
-                questionsTitle.textContent = 'Decision Path:';
+                questionsTitle.textContent = 'Responses:';
                 detailsContent.appendChild(questionsTitle);
                 
-                // Filtra apenas as perguntas do histórico JSON
                 const questions = proc.history.filter(item => item.type === 'question');
                 
                 questions.forEach(q => {
@@ -262,7 +253,7 @@ document.addEventListener('DOMContentLoaded', function () {
     async function showHistory() {
         try {
             const data = await apiCall('/processes', 'GET');
-            allProcesses = data.processes; // Armazena todos os processos
+            allProcesses = data.processes; 
 
             centralContainer.innerHTML = '';
             const title = document.createElement('h2');
@@ -270,7 +261,6 @@ document.addEventListener('DOMContentLoaded', function () {
             title.className = 'history-title';
             centralContainer.appendChild(title);
 
-            // NOVO: Container de filtros
             const filterContainer = document.createElement('div');
             filterContainer.className = 'filter-container';
 
@@ -289,10 +279,9 @@ document.addEventListener('DOMContentLoaded', function () {
             centralContainer.appendChild(filterContainer);
 
             const historyListContainer = document.createElement('div');
-            historyListContainer.id = 'history-list-container'; // ID para fácil acesso
+            historyListContainer.id = 'history-list-container'; 
             centralContainer.appendChild(historyListContainer);
 
-            // Event listener para os filtros
             const applyFilters = () => {
                 const appNameQuery = appNameFilter.value.toLowerCase();
                 const strategyQuery = strategyFilter.value.toLowerCase();
@@ -308,7 +297,6 @@ document.addEventListener('DOMContentLoaded', function () {
             appNameFilter.addEventListener('keyup', applyFilters);
             strategyFilter.addEventListener('keyup', applyFilters);
 
-            // Renderização inicial
             renderHistoryList(allProcesses);
 
             const backButton = document.createElement('button');
@@ -321,7 +309,6 @@ document.addEventListener('DOMContentLoaded', function () {
             centralContainer.appendChild(backButton);
 
         } catch (error) {
-            // A função apiCall já mostra o alerta
         }
     }
 
@@ -435,7 +422,6 @@ document.addEventListener('DOMContentLoaded', function () {
             saveButton.className = 'form-button';
             saveButton.onclick = async () => {
                 try {
-                    // Adicionado 'applicationName' ao payload
                     await apiCall('/save_process', 'POST', { 
                         processHistory: processHistory,
                         applicationName: currentApplicationName 
@@ -443,7 +429,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     alert('Process saved successfully!');
                     showMainAppView();
                 } catch (error) {
-                    // A função apiCall já mostra o alerta
                 }
             };
         
