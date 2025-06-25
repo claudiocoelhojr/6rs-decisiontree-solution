@@ -1,3 +1,4 @@
+// frontend/script.js
 import { decisionTree } from './decisiontree.js';
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -20,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let processHistory = [];
     let currentNode = 'DC5';
+    let currentApplicationName = ''; // NOVA VARIÁVEL
+    let allProcesses = []; // Armazena todos os processos para filtragem no cliente
     const API_URL = 'https://sixrs-decisiontree-solution.onrender.com';
 
     const token = localStorage.getItem('authToken');
@@ -68,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
             localStorage.setItem('authToken', data.token);
             showMainAppView();
         } catch (error) {
-            alert(error.message);
+            // A função apiCall já mostra o alerta
         } finally {
             submitButton.textContent = 'LOGIN';
             submitButton.disabled = false;
@@ -91,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
             signupView.classList.add('hidden');
             loginView.classList.remove('hidden');
         } catch (error) {
-            alert(error.message);
+            // A função apiCall já mostra o alerta
         }
     });
 
@@ -108,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
             forgotPasswordView.classList.add('hidden');
             loginView.classList.remove('hidden');
         } catch (error) {
-            alert(error.message);
+            // A função apiCall já mostra o alerta
         } finally {
             submitButton.textContent = 'SEND RESET LINK';
             submitButton.disabled = false;
@@ -122,38 +125,77 @@ document.addEventListener('DOMContentLoaded', function () {
         centralContainer.style.flexDirection = 'column';
         centralContainer.style.justifyContent = 'center';
         centralContainer.style.alignItems = 'center';
-
+    
         const welcomeTitle = document.createElement('h2');
-        welcomeTitle.textContent = 'CHOOSE AN OPTION:';
-        welcomeTitle.style.color = 'white';
-        welcomeTitle.style.fontSize = '2em';
-        welcomeTitle.style.marginBottom = '30px';
-        welcomeTitle.style.textShadow = '0px 8px 16px rgba(0, 0, 0, 0.3);'
-
+        welcomeTitle.textContent = 'WELCOME!';
+        welcomeTitle.className = 'main-menu-title';
+    
+        // NOVO: Campo de input para o nome da aplicação
+        const appNameContainer = document.createElement('div');
+        appNameContainer.className = 'input-group main-menu-input-group';
+    
+        const appNameLabel = document.createElement('label');
+        appNameLabel.htmlFor = 'applicationName';
+        appNameLabel.textContent = 'First, what is the name of the application to be migrated?';
+    
+        const appNameInput = document.createElement('input');
+        appNameInput.type = 'text';
+        appNameInput.id = 'applicationName';
+        appNameInput.placeholder = 'e.g., Legacy CRM System';
+    
+        const errorMsg = document.createElement('p');
+        errorMsg.className = 'error-message';
+        errorMsg.style.display = 'none'; // Escondido por padrão
+    
+        appNameContainer.appendChild(appNameLabel);
+        appNameContainer.appendChild(appNameInput);
+        appNameContainer.appendChild(errorMsg);
+    
         const buttonContainer = document.createElement('div');
-        buttonContainer.style.display = 'flex';
-        buttonContainer.style.gap = '20px';
-
+        buttonContainer.className = 'main-menu-buttons';
+    
         const startNewBtn = document.createElement('button');
         startNewBtn.textContent = 'Start New Process';
         startNewBtn.className = 'form-button';
-        startNewBtn.onclick = () => {
-            processHistory = [];
-            currentNode = 'DC5';
-            renderNode(currentNode);
-        };
-
+        startNewBtn.disabled = true; // Desabilitado por padrão
+    
         const viewHistoryBtn = document.createElement('button');
         viewHistoryBtn.textContent = 'View History';
         viewHistoryBtn.className = 'form-button';
         viewHistoryBtn.style.backgroundColor = '#007BFF';
+    
+        // NOVO: Lógica de validação
+        appNameInput.addEventListener('input', () => {
+            const appName = appNameInput.value.trim();
+            if (appName.length >= 3) {
+                startNewBtn.disabled = false;
+                errorMsg.style.display = 'none';
+                currentApplicationName = appName;
+            } else {
+                startNewBtn.disabled = true;
+                errorMsg.textContent = 'Application name must be at least 3 characters long.';
+                errorMsg.style.display = 'block';
+                currentApplicationName = '';
+            }
+        });
+    
+        startNewBtn.onclick = () => {
+            if (currentApplicationName) {
+                processHistory = [];
+                currentNode = 'DC5';
+                renderNode(currentNode);
+            }
+        };
+    
         viewHistoryBtn.onclick = showHistory;
-
+    
         buttonContainer.appendChild(startNewBtn);
         buttonContainer.appendChild(viewHistoryBtn);
+    
         centralContainer.appendChild(welcomeTitle);
+        centralContainer.appendChild(appNameContainer);
         centralContainer.appendChild(buttonContainer);
-
+    
         restartButton.textContent = "Logout";
         restartButton.disabled = false;
         restartButton.onclick = () => {
@@ -161,57 +203,128 @@ document.addEventListener('DOMContentLoaded', function () {
             location.reload();
         };
     }
+    
+    // NOVO: Função para renderizar a lista de histórico (para suportar filtragem)
+    function renderHistoryList(processes) {
+        const historyListContainer = document.getElementById('history-list-container');
+        historyListContainer.innerHTML = ''; // Limpa a lista antes de renderizar
+
+        if (processes.length === 0) {
+            const noResultsText = document.createElement('p');
+            noResultsText.textContent = "No matching processes found.";
+            noResultsText.style.color = 'white';
+            noResultsText.style.textAlign = 'center';
+            noResultsText.style.marginTop = '20px';
+            historyListContainer.appendChild(noResultsText);
+        } else {
+            processes.forEach(proc => {
+                const procItem = document.createElement('div');
+                procItem.className = 'history-item';
+
+                // Usando <details> e <summary> para a cascata
+                const details = document.createElement('details');
+                const summary = document.createElement('summary');
+                summary.className = 'history-item-summary';
+
+                const summaryContent = `
+                    <div class="summary-info">
+                        <span class="summary-app-name">${proc.application_name}</span>
+                        <span class="summary-strategy">${proc.strategy_name}</span>
+                    </div>
+                    <span class="summary-date">${new Date(proc.created_at).toLocaleString()}</span>
+                `;
+                summary.innerHTML = summaryContent;
+
+                const detailsContent = document.createElement('div');
+                detailsContent.className = 'history-item-details';
+
+                const questionsTitle = document.createElement('h4');
+                questionsTitle.textContent = 'Decision Path:';
+                detailsContent.appendChild(questionsTitle);
+                
+                // Filtra apenas as perguntas do histórico JSON
+                const questions = proc.history.filter(item => item.type === 'question');
+                
+                questions.forEach(q => {
+                    const questionElement = document.createElement('p');
+                    questionElement.innerHTML = `<strong>${q.id}:</strong> ${q.text} <strong>Answer:</strong> ${q.answer}`;
+                    detailsContent.appendChild(questionElement);
+                });
+
+                details.appendChild(summary);
+                details.appendChild(detailsContent);
+                procItem.appendChild(details);
+                historyListContainer.appendChild(procItem);
+            });
+        }
+    }
 
     async function showHistory() {
         try {
             const data = await apiCall('/processes', 'GET');
+            allProcesses = data.processes; // Armazena todos os processos
+
             centralContainer.innerHTML = '';
             const title = document.createElement('h2');
             title.textContent = "PREVIOUS RESULTS";
-            title.style.fontSize = '2.5em';
-            title.style.color = 'white';
-            title.style.marginBottom = '20px';
+            title.className = 'history-title';
             centralContainer.appendChild(title);
 
-            if (data.processes.length === 0) {
-                const noHistoryText = document.createElement('p');
-                noHistoryText.textContent = "You haven't saved any processes yet.";
-                noHistoryText.style.color = 'white';
-                centralContainer.appendChild(noHistoryText);
-            } else {
-                const historyList = document.createElement('div');
-                historyList.style.color = 'white';
-                historyList.style.backgroundColor = 'rgba(0,0,0,0.2)';
-                historyList.style.padding = '20px';
-                historyList.style.borderRadius = '8px';
-                historyList.style.width = '80%';
-                historyList.style.maxWidth = '700px';
-                historyList.style.maxHeight = '400px';
-                historyList.style.overflowY = 'auto';
+            // NOVO: Container de filtros
+            const filterContainer = document.createElement('div');
+            filterContainer.className = 'filter-container';
 
-                data.processes.forEach(proc => {
-                    const procItem = document.createElement('div');
-                    procItem.style.borderBottom = '1px solid #555';
-                    procItem.style.padding = '15px 10px';
-                    procItem.innerHTML = `
-                        <p style="font-size: 1.2em; margin: 0 0 5px 0;"><strong>Strategy:</strong> ${proc.strategy_name}</p>
-                        <p style="font-size: 0.9em; margin: 0; color: #ddd;"><strong>Date:</strong> ${new Date(proc.created_at).toLocaleString()}</p>
-                    `;
-                    historyList.appendChild(procItem);
+            const appNameFilter = document.createElement('input');
+            appNameFilter.type = 'text';
+            appNameFilter.placeholder = 'Filter by application name...';
+            appNameFilter.className = 'filter-input';
+            
+            const strategyFilter = document.createElement('input');
+            strategyFilter.type = 'text';
+            strategyFilter.placeholder = 'Filter by strategy name...';
+            strategyFilter.className = 'filter-input';
+
+            filterContainer.appendChild(appNameFilter);
+            filterContainer.appendChild(strategyFilter);
+            centralContainer.appendChild(filterContainer);
+
+            const historyListContainer = document.createElement('div');
+            historyListContainer.id = 'history-list-container'; // ID para fácil acesso
+            centralContainer.appendChild(historyListContainer);
+
+            // Event listener para os filtros
+            const applyFilters = () => {
+                const appNameQuery = appNameFilter.value.toLowerCase();
+                const strategyQuery = strategyFilter.value.toLowerCase();
+
+                const filteredProcesses = allProcesses.filter(proc => {
+                    const appMatch = proc.application_name.toLowerCase().includes(appNameQuery);
+                    const strategyMatch = proc.strategy_name.toLowerCase().includes(strategyQuery);
+                    return appMatch && strategyMatch;
                 });
-                centralContainer.appendChild(historyList);
-            }
+                renderHistoryList(filteredProcesses);
+            };
+
+            appNameFilter.addEventListener('keyup', applyFilters);
+            strategyFilter.addEventListener('keyup', applyFilters);
+
+            // Renderização inicial
+            renderHistoryList(allProcesses);
 
             const backButton = document.createElement('button');
             backButton.textContent = 'Back to Main Menu';
             backButton.className = 'form-button';
             backButton.style.marginTop = '20px';
+            backButton.style.width = 'auto';
+            backButton.style.maxWidth = '300px';
             backButton.onclick = showMainAppView;
             centralContainer.appendChild(backButton);
+
         } catch (error) {
-            alert(error.message);
+            // A função apiCall já mostra o alerta
         }
     }
+
 
     const questions = {
         DC1: 'Does the solution depend on any software or package that is in a deprecated version?',
@@ -322,11 +435,15 @@ document.addEventListener('DOMContentLoaded', function () {
             saveButton.className = 'form-button';
             saveButton.onclick = async () => {
                 try {
-                    await apiCall('/save_process', 'POST', { processHistory });
+                    // Adicionado 'applicationName' ao payload
+                    await apiCall('/save_process', 'POST', { 
+                        processHistory: processHistory,
+                        applicationName: currentApplicationName 
+                    });
                     alert('Process saved successfully!');
                     showMainAppView();
                 } catch (error) {
-                    alert(error.message);
+                    // A função apiCall já mostra o alerta
                 }
             };
         
@@ -385,22 +502,26 @@ document.addEventListener('DOMContentLoaded', function () {
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF('p', 'mm', 'a4');
         let yOffset = 10;
+        
         doc.setFontSize(22);
         doc.text("6R's Decision Tree Report", 105, yOffset, null, null, "center");
-        yOffset += 15;
+        yOffset += 10;
+
         doc.setFontSize(14);
+        doc.text(`Application: ${currentApplicationName}`, 10, yOffset);
+        yOffset += 15;
+
         doc.text("Process History:", 10, yOffset);
         yOffset += 10;
+        
         processHistory.forEach((item, index) => {
             if (yOffset > 270) { doc.addPage(); yOffset = 10; }
             if (item.type === 'question') {
                 doc.setFontSize(12);
-                const splitQuestion = doc.splitTextToSize(item.text, 180);
-                doc.text(`Question ${index + 1} (${item.id}):`, 15, yOffset);
-                yOffset += 7;
-                doc.text(splitQuestion, 20, yOffset);
-                yOffset += (splitQuestion.length * 7);
-                doc.text(`Answer: ${item.answer}`, 20, yOffset + 3);
+                const splitQuestion = doc.splitTextToSize(`Q: ${item.text}`, 180);
+                doc.text(splitQuestion, 15, yOffset);
+                yOffset += (splitQuestion.length * 5);
+                doc.text(`A: ${item.answer}`, 15, yOffset + 3, { "font-style": "bold" });
                 yOffset += 10;
             } else if (item.type === 'strategy') {
                 doc.setFontSize(14);
@@ -409,9 +530,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 doc.setFontSize(12);
                 const splitDescription = doc.splitTextToSize(item.text, 180);
                 doc.text(splitDescription, 20, yOffset);
-                yOffset += (splitDescription.length * 7) + 10;
+                yOffset += (splitDescription.length * 5) + 10;
             }
         });
-        doc.save('6Rs_Decision_Tree_Report.pdf');
+        doc.save(`${currentApplicationName.replace(/ /g, '_')}_Report.pdf`);
     }
 });
