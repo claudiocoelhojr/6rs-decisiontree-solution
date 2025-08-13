@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (token) {
             headers['Authorization'] = `Bearer ${token}`;
         }
-        const config = { method: method, headers: headers };
+        const config = { method: method, headers: headers, credentials: 'include' };
         if (body) {
             config.body = JSON.stringify(body);
         }

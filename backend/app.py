@@ -14,7 +14,9 @@ load_dotenv()
 
 app = Flask(__name__)
 
-CORS(app, resources={r"/*": {"origins": os.environ.get('FRONTEND_URL')}})
+allowed_origins_str = os.environ.get('ALLOWED_ORIGINS', '')
+allowed_origins = [origin.strip() for origin in allowed_origins_str.split(',') if origin.strip()]
+CORS(app, resources={r"/*": {"origins": allowed_origins}}, supports_credentials=True)
 
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
@@ -122,19 +124,19 @@ def forgot_password():
             'user_id': user.id,
             'exp': datetime.datetime.utcnow() + datetime.timedelta(minutes=15)
         }, app.config['SECRET_KEY'], algorithm="HS256")
+        
+        frontend_url_base = next(iter(allowed_origins), '')
+        reset_url = f"{frontend_url_base}/reset_password.html?token={reset_token}"
 
-        frontend_url = os.environ.get('FRONTEND_URL')
-        reset_url = f"{frontend_url}/reset_password.html?token={reset_token}"
-
-        msg = Message("Password Reset Request for 6R's Decision Tree",
+        msg = Message("Password Reset Request for 7R's Decision Tree Solution",
                       recipients=[user.email])
         msg.html = f"""
             <p>Hello,</p>
-            <p>You requested a password reset for your account on the 6R's Decision Tree Solution.</p>
+            <p>You requested a password reset for your account on the 7R's Decision Tree Solution.</p>
             <p>Please click the link below to set a new password. This link is valid for 15 minutes.</p>
             <p><a href="{reset_url}" style="padding: 10px 15px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Reset Your Password</a></p>
             <p>If you did not request a password reset, please ignore this email.</p>
-            <p>Thank you,<br>The 6R's Decision Tree Team</p>
+            <p>Thank you,<br>The 7R's Decision Tree Team</p>
         """
         mail.send(msg)
 
@@ -157,7 +159,7 @@ def reset_password():
         user = User.query.get(token_data['user_id'])
         
         if not user:
-             return jsonify({'message': 'User not found.'}), 404
+            return jsonify({'message': 'User not found.'}), 404
 
         user.password_hash = bcrypt.generate_password_hash(new_password).decode('utf-8')
         db.session.commit()
