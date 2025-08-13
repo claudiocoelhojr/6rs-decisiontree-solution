@@ -489,7 +489,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let yOffset = 10;
         
         doc.setFontSize(22);
-        doc.text("6R's Decision Tree Report", 105, yOffset, null, null, "center");
+        doc.text("7R's Decision Tree Report", 105, yOffset, null, null, "center");
         yOffset += 10;
 
         doc.setFontSize(14);
